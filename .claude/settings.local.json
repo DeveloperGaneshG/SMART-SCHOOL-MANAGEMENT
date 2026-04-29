@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e \"const pkg = require\\('./node_modules/framer-motion/package.json'\\); console.log\\('framer-motion:', pkg.version\\)\")",
+      "Bash(node -e \"const pkg = require\\('./node_modules/@react-three/fiber/package.json'\\); console.log\\('@react-three/fiber:', pkg.version\\)\")",
+      "Bash(node -e \"const pkg = require\\('./node_modules/three/package.json'\\); console.log\\('three:', pkg.version\\)\")",
+      "Bash(taskkill /PID 22628 /F)",
+      "PowerShell(taskkill /PID 22628 /F)",
+      "Bash(npx tsc *)",
+      "Bash(npx next *)"
+    ]
+  }
+}
