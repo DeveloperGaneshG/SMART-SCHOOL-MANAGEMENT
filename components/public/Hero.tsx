@@ -29,28 +29,29 @@ export default function Hero() {
       style={{ backgroundColor: "#0A0F1E" }}
     >
       {/* Video background */}
-      <motion.div
-        className="absolute inset-0 z-0"
+      <motion.video
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1.5, ease: "easeIn" }}
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          zIndex: 0,
+        }}
       >
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          style={{
-            position: "absolute",
-            inset: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-          }}
-        >
-          <source src="/videos/hero-animation.mp4" type="video/mp4" />
-        </video>
-      </motion.div>
+        <source src="/videos/header-video.mp4" type="video/mp4" />
+      </motion.video>
 
       {/* Dark overlay */}
       <div
