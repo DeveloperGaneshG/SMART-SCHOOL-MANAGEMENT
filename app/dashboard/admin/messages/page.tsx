@@ -12,8 +12,8 @@ import {
   AlertCircle,
   CheckCircle,
 } from "lucide-react";
-import { getSupabase } from "@/lib/getSupabase()";
-import type { ContactMessage } from "@/lib/getSupabase()";
+import { getSupabase } from "@/lib/supabase";
+import type { ContactMessage } from "@/lib/supabase";
 
 function getReadIds(): Set<string> {
   if (typeof window === "undefined") return new Set();

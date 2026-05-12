@@ -12,8 +12,8 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { ClipboardList, CheckCircle, Clock, XCircle, Eye, Check, X, AlertCircle } from "lucide-react";
-import { getSupabase } from "@/lib/getSupabase()";
-import type { Admission } from "@/lib/getSupabase()";
+import { getSupabase } from "@/lib/supabase";
+import type { Admission } from "@/lib/supabase";
 
 type AppStatus = "Approved" | "Pending" | "Rejected" | "Under Review";
 

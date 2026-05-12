@@ -18,8 +18,8 @@ import {
   AlertCircle,
   CheckCircle,
 } from "lucide-react";
-import { getSupabase } from "@/lib/getSupabase()";
-import type { Student } from "@/lib/getSupabase()";
+import { getSupabase } from "@/lib/supabase";
+import type { Student } from "@/lib/supabase";
 
 const GRADES = ["All Classes", "Grade 6", "Grade 7", "Grade 8", "Grade 9", "Grade 10", "Grade 11", "Grade 12"];
 
