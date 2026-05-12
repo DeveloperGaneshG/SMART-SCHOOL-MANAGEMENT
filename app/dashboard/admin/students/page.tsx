@@ -18,8 +18,8 @@ import {
   AlertCircle,
   CheckCircle,
 } from "lucide-react";
-import { getSupabase } from "@/lib/supabase";
-import type { Student } from "@/lib/supabase";
+import { getSupabase } from "@/lib/getSupabase()";
+import type { Student } from "@/lib/getSupabase()";
 
 const GRADES = ["All Classes", "Grade 6", "Grade 7", "Grade 8", "Grade 9", "Grade 10", "Grade 11", "Grade 12"];
 
@@ -141,7 +141,7 @@ export default function StudentsPage() {
   async function fetchStudents() {
     setLoading(true);
     try {
-      const { data, error } = await supabase
+      const { data, error } = await getSupabase()
         .from("students")
         .select("*")
         .order("created_at", { ascending: false });
@@ -174,7 +174,7 @@ export default function StudentsPage() {
     setSaving(true);
     try {
       const rollNum = `VIS-${Date.now().toString().slice(-6)}`;
-      const { data, error } = await supabase
+      const { data, error } = await getSupabase()
         .from("students")
         .insert({
           full_name: form.name,

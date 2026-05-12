@@ -12,8 +12,8 @@ import {
   AlertCircle,
   CheckCircle,
 } from "lucide-react";
-import { getSupabase } from "@/lib/supabase";
-import type { ContactMessage } from "@/lib/supabase";
+import { getSupabase } from "@/lib/getSupabase()";
+import type { ContactMessage } from "@/lib/getSupabase()";
 
 function getReadIds(): Set<string> {
   if (typeof window === "undefined") return new Set();
@@ -77,7 +77,7 @@ export default function MessagesPage() {
   async function fetchMessages() {
     setLoading(true);
     try {
-      const { data, error } = await supabase
+      const { data, error } = await getSupabase()
         .from("contact_messages")
         .select("*")
         .order("created_at", { ascending: false });

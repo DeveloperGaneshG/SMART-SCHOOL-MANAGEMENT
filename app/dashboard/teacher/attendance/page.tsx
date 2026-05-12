@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckSquare, Users, AlertCircle, Clock, ChevronDown, CheckCircle } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { getSupabase } from "@/lib/supabase";
+import { getSupabase } from "@/lib/getSupabase()";
 
 // â”€â”€â”€ Types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 type AttendanceStatus = "present" | "absent" | "late";

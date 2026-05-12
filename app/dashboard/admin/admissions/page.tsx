@@ -12,8 +12,8 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { ClipboardList, CheckCircle, Clock, XCircle, Eye, Check, X, AlertCircle } from "lucide-react";
-import { getSupabase } from "@/lib/supabase";
-import type { Admission } from "@/lib/supabase";
+import { getSupabase } from "@/lib/getSupabase()";
+import type { Admission } from "@/lib/getSupabase()";
 
 type AppStatus = "Approved" | "Pending" | "Rejected" | "Under Review";
 
@@ -118,7 +118,7 @@ export default function AdmissionsPage() {
   useEffect(() => {
     async function fetchAdmissions() {
       try {
-        const { data, error } = await supabase
+        const { data, error } = await getSupabase()
           .from("admissions")
           .select("*")
           .order("created_at", { ascending: false });
