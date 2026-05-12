@@ -1,12 +1,12 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckSquare, Users, AlertCircle, Clock, ChevronDown, CheckCircle } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { supabase } from "@/lib/supabase";
+import { getSupabase } from "@/lib/supabase";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+// â”€â”€â”€ Types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 type AttendanceStatus = "present" | "absent" | "late";
 
 interface Student {
@@ -14,7 +14,7 @@ interface Student {
   name: string;
 }
 
-// ─── Mock data ────────────────────────────────────────────────────────────────
+// â”€â”€â”€ Mock data â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const CLASSES = ["Grade 9A", "Grade 8B", "Grade 10A"];
 
 const STUDENTS_9A: Student[] = [
@@ -79,7 +79,7 @@ const STATUS_CONFIG: Record<
   },
 };
 
-// ─── Toast ────────────────────────────────────────────────────────────────────
+// â”€â”€â”€ Toast â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function Toast({
   message,
   type,
@@ -109,7 +109,7 @@ function Toast({
   );
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
+// â”€â”€â”€ Page â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export default function AttendancePage() {
   const { data: session } = useSession();
   const markedBy = session?.user?.name ?? "Teacher";
@@ -159,12 +159,12 @@ export default function AttendancePage() {
         status: statuses[s.roll],
         marked_by: markedBy,
       }));
-      const { error } = await supabase.from("attendance").insert(records);
+      const { error } = await getSupabase().from("attendance").insert(records);
       if (error) throw error;
       const d = new Date(date);
       const label = d.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
       setSaved(true);
-      setToast({ message: `Attendance saved for ${selectedClass} – ${label}`, type: "success" });
+      setToast({ message: `Attendance saved for ${selectedClass} â€“ ${label}`, type: "success" });
     } catch {
       setToast({ message: "Something went wrong. Please try again.", type: "error" });
     } finally {
@@ -404,7 +404,7 @@ export default function AttendancePage() {
                 }`}
               >
                 {saving ? (
-                  <><motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }} className="w-4 h-4 border-2 border-navy/40 border-t-navy rounded-full" /> Saving…</>
+                  <><motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }} className="w-4 h-4 border-2 border-navy/40 border-t-navy rounded-full" /> Savingâ€¦</>
                 ) : saved ? (
                   <><CheckCircle size={15} /> Attendance Saved</>
                 ) : (

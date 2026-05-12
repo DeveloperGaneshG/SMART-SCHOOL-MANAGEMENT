@@ -67,7 +67,7 @@ export type ContactMessage = {
 
 let _client: SupabaseClient | null = null;
 
-function getClient(): SupabaseClient {
+export function getSupabase(): SupabaseClient {
   if (!_client) {
     _client = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -76,11 +76,3 @@ function getClient(): SupabaseClient {
   }
   return _client;
 }
-
-export const supabase = new Proxy({} as SupabaseClient, {
-  get(_, prop) {
-    const c = getClient();
-    const val = (c as unknown as Record<string | symbol, unknown>)[prop];
-    return typeof val === "function" ? (val as Function).bind(c) : val;
-  },
-});

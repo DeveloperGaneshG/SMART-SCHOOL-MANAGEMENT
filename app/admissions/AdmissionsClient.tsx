@@ -23,7 +23,7 @@ import {
 } from "lucide-react";
 import Navbar from "@/components/public/Navbar";
 import Footer from "@/components/public/Footer";
-import { supabase } from "@/lib/supabase";
+import { getSupabase } from "@/lib/supabase";
 
 function AdmissionsHero() {
   return (
@@ -164,7 +164,7 @@ function AdmissionForm() {
     setSubmitting(true);
     setSubmitError(null);
     try {
-      const { error } = await supabase.from("admissions").insert({
+      const { error } = await getSupabase().from("admissions").insert({
         student_name: watchAll.studentName,
         date_of_birth: watchAll.dob,
         gender: watchAll.gender,

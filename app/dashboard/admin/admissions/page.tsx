@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -12,7 +12,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { ClipboardList, CheckCircle, Clock, XCircle, Eye, Check, X, AlertCircle } from "lucide-react";
-import { supabase } from "@/lib/supabase";
+import { getSupabase } from "@/lib/supabase";
 import type { Admission } from "@/lib/supabase";
 
 type AppStatus = "Approved" | "Pending" | "Rejected" | "Under Review";
@@ -136,7 +136,7 @@ export default function AdmissionsPage() {
   async function approve(id: string) {
     setApps((prev) => prev.map((a) => a.id === id ? { ...a, status: "Approved" as AppStatus } : a));
     try {
-      const { error } = await supabase.from("admissions").update({ status: "approved" }).eq("id", id);
+      const { error } = await getSupabase().from("admissions").update({ status: "approved" }).eq("id", id);
       if (error) throw error;
       setToast({ message: "Application approved!", type: "success" });
     } catch {
@@ -148,7 +148,7 @@ export default function AdmissionsPage() {
   async function reject(id: string) {
     setApps((prev) => prev.map((a) => a.id === id ? { ...a, status: "Rejected" as AppStatus } : a));
     try {
-      const { error } = await supabase.from("admissions").update({ status: "rejected" }).eq("id", id);
+      const { error } = await getSupabase().from("admissions").update({ status: "rejected" }).eq("id", id);
       if (error) throw error;
       setToast({ message: "Application rejected!", type: "success" });
     } catch {
@@ -179,10 +179,10 @@ export default function AdmissionsPage() {
         className="grid grid-cols-2 lg:grid-cols-4 gap-4"
       >
         {[
-          { icon: ClipboardList, label: "Total Applications", value: loading ? "—" : counts.total, color: "text-electric", bg: "bg-electric/10" },
-          { icon: CheckCircle, label: "Approved", value: loading ? "—" : counts.approved, color: "text-emerald-400", bg: "bg-emerald-500/10" },
-          { icon: Clock, label: "Pending Review", value: loading ? "—" : counts.pending, color: "text-yellow-400", bg: "bg-yellow-500/10" },
-          { icon: XCircle, label: "Rejected", value: loading ? "—" : counts.rejected, color: "text-red-400", bg: "bg-red-500/10" },
+          { icon: ClipboardList, label: "Total Applications", value: loading ? "â€”" : counts.total, color: "text-electric", bg: "bg-electric/10" },
+          { icon: CheckCircle, label: "Approved", value: loading ? "â€”" : counts.approved, color: "text-emerald-400", bg: "bg-emerald-500/10" },
+          { icon: Clock, label: "Pending Review", value: loading ? "â€”" : counts.pending, color: "text-yellow-400", bg: "bg-yellow-500/10" },
+          { icon: XCircle, label: "Rejected", value: loading ? "â€”" : counts.rejected, color: "text-red-400", bg: "bg-red-500/10" },
         ].map(({ icon: Icon, label, value, color, bg }) => (
           <div key={label} className="glass rounded-2xl p-4 border border-white/8 flex items-center gap-3">
             <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${bg}`}>
@@ -301,7 +301,7 @@ export default function AdmissionsPage() {
         transition={{ delay: 0.25 }}
         className="glass rounded-2xl p-5 border border-white/8"
       >
-        <h3 className="font-heading font-semibold text-soft-white mb-4">Admissions Trend – Last 6 Months</h3>
+        <h3 className="font-heading font-semibold text-soft-white mb-4">Admissions Trend â€“ Last 6 Months</h3>
         <ResponsiveContainer width="100%" height={220}>
           <BarChart data={trendData} barSize={40}>
             <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />

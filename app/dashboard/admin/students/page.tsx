@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -18,7 +18,7 @@ import {
   AlertCircle,
   CheckCircle,
 } from "lucide-react";
-import { supabase } from "@/lib/supabase";
+import { getSupabase } from "@/lib/supabase";
 import type { Student } from "@/lib/supabase";
 
 const GRADES = ["All Classes", "Grade 6", "Grade 7", "Grade 8", "Grade 9", "Grade 10", "Grade 11", "Grade 12"];
@@ -208,7 +208,7 @@ export default function StudentsPage() {
     if (!deleteId) return;
     setDeleting(true);
     try {
-      const { error } = await supabase.from("students").delete().eq("id", deleteId);
+      const { error } = await getSupabase().from("students").delete().eq("id", deleteId);
       if (error) throw error;
       setStudents((prev) => prev.filter((s) => s.id !== deleteId));
       setDeleteId(null);
@@ -225,7 +225,7 @@ export default function StudentsPage() {
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h2 className="font-heading font-bold text-2xl text-soft-white">Student Management</h2>
         <p className="text-muted text-sm mt-1">
-          {loading ? "Loading students…" : `Manage all ${counts.total} enrolled students`}
+          {loading ? "Loading studentsâ€¦" : `Manage all ${counts.total} enrolled students`}
         </p>
       </motion.div>
 
@@ -237,10 +237,10 @@ export default function StudentsPage() {
         className="grid grid-cols-2 lg:grid-cols-4 gap-4"
       >
         {[
-          { icon: GraduationCap, label: "Total Enrolled", value: loading ? "—" : counts.total, color: "text-electric", bg: "bg-electric/10" },
-          { icon: UserCheck, label: "Active", value: loading ? "—" : counts.active, color: "text-emerald-400", bg: "bg-emerald-500/10" },
-          { icon: UserMinus, label: "Inactive", value: loading ? "—" : counts.inactive, color: "text-red-400", bg: "bg-red-500/10" },
-          { icon: UserPlus, label: "New This Year", value: "—", color: "text-gold", bg: "bg-gold/10" },
+          { icon: GraduationCap, label: "Total Enrolled", value: loading ? "â€”" : counts.total, color: "text-electric", bg: "bg-electric/10" },
+          { icon: UserCheck, label: "Active", value: loading ? "â€”" : counts.active, color: "text-emerald-400", bg: "bg-emerald-500/10" },
+          { icon: UserMinus, label: "Inactive", value: loading ? "â€”" : counts.inactive, color: "text-red-400", bg: "bg-red-500/10" },
+          { icon: UserPlus, label: "New This Year", value: "â€”", color: "text-gold", bg: "bg-gold/10" },
         ].map(({ icon: Icon, label, value, color, bg }) => (
           <div key={label} className="glass rounded-2xl p-4 border border-white/8 flex items-center gap-3">
             <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${bg}`}>
@@ -383,7 +383,7 @@ export default function StudentsPage() {
 
         {/* Pagination */}
         <div className="flex items-center justify-between px-5 py-4 border-t border-white/8">
-          <p className="text-muted text-sm">Showing 1–{filtered.length} of {students.length}</p>
+          <p className="text-muted text-sm">Showing 1â€“{filtered.length} of {students.length}</p>
           <div className="flex items-center gap-2">
             <button className="p-1.5 rounded-lg hover:bg-white/5 text-muted hover:text-soft-white transition-colors">
               <ChevronLeft size={16} />
@@ -496,7 +496,7 @@ export default function StudentsPage() {
                   className="flex-1 px-4 py-2.5 rounded-xl bg-gold text-white text-sm font-semibold hover:bg-gold-dark transition-colors disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                   {saving ? (
-                    <><motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }} className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full" /> Saving…</>
+                    <><motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }} className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full" /> Savingâ€¦</>
                   ) : "Save Student"}
                 </button>
               </div>
@@ -547,7 +547,7 @@ export default function StudentsPage() {
                   className="flex-1 px-4 py-2.5 rounded-xl bg-red-500 text-white text-sm font-semibold hover:bg-red-600 transition-colors disabled:opacity-60 flex items-center justify-center gap-2"
                 >
                   {deleting ? (
-                    <><motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }} className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full" /> Deleting…</>
+                    <><motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }} className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full" /> Deletingâ€¦</>
                   ) : "Delete"}
                 </button>
               </div>

@@ -1,12 +1,12 @@
-"use client";
+﻿"use client";
 
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, CheckCircle, TrendingUp, TrendingDown, AlertCircle } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { supabase } from "@/lib/supabase";
+import { getSupabase } from "@/lib/supabase";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+// â”€â”€â”€ Types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 interface Student {
   roll: number;
   name: string;
@@ -17,7 +17,7 @@ interface MarksRow {
   remarks: string;
 }
 
-// ─── Mock data ────────────────────────────────────────────────────────────────
+// â”€â”€â”€ Mock data â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const CLASSES = ["Grade 9A", "Grade 8B", "Grade 10A"];
 const EXAM_TYPES = [
   "Unit Test 1", "Unit Test 2", "Unit Test 3",
@@ -42,7 +42,7 @@ const STUDENTS: Student[] = [
   { roll: 15, name: "Nikhil Gupta" },
 ];
 
-// ─── Grade logic ──────────────────────────────────────────────────────────────
+// â”€â”€â”€ Grade logic â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function calcGrade(marks: number, max: number): string {
   const pct = (marks / max) * 100;
   if (pct >= 90) return "A+";
@@ -62,7 +62,7 @@ const GRADE_STYLE: Record<string, string> = {
   F: "bg-red-500/20 text-red-400 border-red-500/30",
 };
 
-// ─── Dropdown ─────────────────────────────────────────────────────────────────
+// â”€â”€â”€ Dropdown â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function Dropdown({
   label,
   value,
@@ -118,7 +118,7 @@ function Dropdown({
   );
 }
 
-// ─── Toast ────────────────────────────────────────────────────────────────────
+// â”€â”€â”€ Toast â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function Toast({
   message,
   type,
@@ -148,7 +148,7 @@ function Toast({
   );
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
+// â”€â”€â”€ Page â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export default function MarksPage() {
   const { data: session } = useSession();
   void session;
@@ -202,9 +202,9 @@ export default function MarksPage() {
           remarks: row.remarks,
         };
       });
-      const { error } = await supabase.from("marks").insert(records);
+      const { error } = await getSupabase().from("marks").insert(records);
       if (error) throw error;
-      setToast({ message: `Marks saved for ${selectedClass} – ${examType}`, type: "success" });
+      setToast({ message: `Marks saved for ${selectedClass} â€“ ${examType}`, type: "success" });
     } catch {
       setToast({ message: "Something went wrong. Please try again.", type: "error" });
     } finally {
@@ -312,7 +312,7 @@ export default function MarksPage() {
                             max={maxMarks + 1}
                             value={row.marks}
                             onChange={(e) => setField(student.roll, "marks", e.target.value)}
-                            placeholder="—"
+                            placeholder="â€”"
                             className={`w-20 text-center px-2 py-1.5 rounded-lg border text-sm bg-white/5 focus:outline-none transition-colors ${
                               isOver
                                 ? "border-red-500/50 text-red-400 focus:border-red-500"
@@ -332,7 +332,7 @@ export default function MarksPage() {
                               {grade}
                             </span>
                           ) : (
-                            <span className="text-muted/40 text-xs">—</span>
+                            <span className="text-muted/40 text-xs">â€”</span>
                           )}
                         </td>
                         <td className="px-4 py-3">
@@ -380,7 +380,7 @@ export default function MarksPage() {
               className="w-full py-3 rounded-xl bg-gold text-navy text-sm font-bold hover:bg-gold-dark transition-colors glow-gold disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {saving ? (
-                <><motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }} className="w-4 h-4 border-2 border-navy/40 border-t-navy rounded-full" /> Saving…</>
+                <><motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }} className="w-4 h-4 border-2 border-navy/40 border-t-navy rounded-full" /> Savingâ€¦</>
               ) : (
                 "Save Marks"
               )}

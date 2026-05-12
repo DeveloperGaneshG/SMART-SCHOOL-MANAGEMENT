@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -12,7 +12,7 @@ import {
   AlertCircle,
   CheckCircle,
 } from "lucide-react";
-import { supabase } from "@/lib/supabase";
+import { getSupabase } from "@/lib/supabase";
 import type { ContactMessage } from "@/lib/supabase";
 
 function getReadIds(): Set<string> {
@@ -108,7 +108,7 @@ export default function MessagesPage() {
     setMessages((m) => m.filter((msg) => msg.id !== id));
     if (expandedId === id) setExpandedId(null);
     try {
-      const { error } = await supabase.from("contact_messages").delete().eq("id", id);
+      const { error } = await getSupabase().from("contact_messages").delete().eq("id", id);
       if (error) throw error;
     } catch {
       setMessages(prev);
@@ -139,7 +139,7 @@ export default function MessagesPage() {
           </div>
           <div>
             <p className="text-2xl font-heading font-bold text-electric">
-              {loading ? "—" : messages.length}
+              {loading ? "â€”" : messages.length}
             </p>
             <p className="text-muted text-xs">Total Messages</p>
           </div>
@@ -150,7 +150,7 @@ export default function MessagesPage() {
           </div>
           <div>
             <p className="text-2xl font-heading font-bold text-gold">
-              {loading ? "—" : unreadCount}
+              {loading ? "â€”" : unreadCount}
             </p>
             <p className="text-muted text-xs">Unread</p>
           </div>
@@ -215,7 +215,7 @@ export default function MessagesPage() {
                         : "1px solid rgba(59,130,246,0.25)",
                     }}
                   >
-                    {/* Card header — click to expand */}
+                    {/* Card header â€” click to expand */}
                     <button
                       onClick={() => toggleExpand(msg.id)}
                       className="w-full text-left px-5 py-4 hover:bg-white/3 transition-colors"
@@ -230,11 +230,11 @@ export default function MessagesPage() {
                             <span className="text-soft-white font-semibold text-sm truncate">
                               {msg.full_name}
                             </span>
-                            <span className="text-muted text-xs">·</span>
+                            <span className="text-muted text-xs">Â·</span>
                             <span className="text-muted text-xs truncate">{msg.email}</span>
                             {msg.phone && (
                               <>
-                                <span className="text-muted text-xs">·</span>
+                                <span className="text-muted text-xs">Â·</span>
                                 <span className="text-muted text-xs">{msg.phone}</span>
                               </>
                             )}

@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import Navbar from "@/components/public/Navbar";
 import Footer from "@/components/public/Footer";
-import { supabase } from "@/lib/supabase";
+import { getSupabase } from "@/lib/supabase";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -130,7 +130,7 @@ function ContactForm() {
   const onSubmit = async (data: ContactFormData) => {
     setSubmitError(null);
     try {
-      const { error } = await supabase.from("contact_messages").insert({
+      const { error } = await getSupabase().from("contact_messages").insert({
         full_name: data.fullName,
         email: data.email,
         phone: data.phone || "",
